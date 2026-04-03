@@ -1,0 +1,177 @@
+-- What is a Constraint in MySQL?
+-- A constraint is a rule applied on a table column to control the type of data that can be inserted.
+
+-- 👉 It ensures:
+-- Data accuracy
+-- Data integrity
+-- No invalid or duplicate data
+
+-- Constraints are used while creating or altering a table.
+-- Types of Constraints in MySQL
+
+-- NOT NULL
+
+-- UNIQUE
+
+-- PRIMARY KEY
+
+-- FOREIGN KEY
+
+-- CHECK
+
+-- DEFAULT
+
+--autoincrement
+
+use class;
+
+-- NOT NULL Constraint
+-- Definition:
+-- Ensures that a column cannot store NULL (empty) values.
+
+CREATE TABLE students (
+    id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    age INT
+);
+
+select * from students;
+
+insert into students values(1,'raj',25);
+insert into students values(2,null,25);
+insert into students values(3,'karan',null);
+
+
+-- id cannot be NULL
+-- name cannot be NULL
+-- age can be NULL
+
+
+-- PRIMARY KEY Constraint
+-- Definition:
+-- A PRIMARY KEY:
+-- Cannot be NULL
+-- Cannot have duplicate values
+-- Uniquely identifies each record in a table
+
+
+
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    city VARCHAR(50)
+);
+
+select * from customers;
+
+insert into customers value (101,'nirmal','chennai');
+insert into customers value (102,'nirmal','chennai');
+insert into customers value (null,'nirmal','chennai');
+insert into customers value (101,'nirmal','chennai');
+
+-- customer_id uniquely identifies each customer.
+
+
+-- UNIQUE Constraint
+-- Definition:
+-- Ensures that all values in a column are different (no duplicates allowed).
+
+
+CREATE TABLE employees (
+    emp_id INT,
+    email VARCHAR(100) UNIQUE
+);
+
+
+insert into employees value (2,'naveen@123gmail.com');
+
+insert into employees value (2,'naveen@123gmail.com');
+
+insert into employees value (2,null);
+
+insert into employees value (2,null);
+
+insert into employees value (2,null);
+
+
+select * from employees;
+
+
+
+-- CHECK Constraint
+-- Definition:
+-- Ensures that values in a column satisfy a specific condition.
+
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    age INT CHECK (age >= 18));
+    
+    
+insert into users value(1,20);
+insert into users value(2,18);
+insert into users value(3,16);
+
+
+-- DEFAULT Constraint
+-- Definition:
+-- Provides a default value for a column if no value is specified.
+
+
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    order_date DATE DEFAULT (CURRENT_DATE)
+);
+
+insert into orders values(222,'2022-02-25');
+insert into orders (order_id) values (333);
+
+insert into orders (order_id) values (222);
+select * from orders;
+
+
+-- FOREIGN KEY Constraint
+-- Definition:
+
+-- A FOREIGN KEY is used to link two tables.
+-- It maintains referential integrity between parent and child tables.
+
+
+use class;
+CREATE TABLE departments (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+
+drop table departments;
+insert into departments value(201,'it');
+insert into departments value(202,'support');
+insert into departments value(204,'sales');
+insert into departments value(205,'hr');
+
+select * from departments;
+
+
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    dept_id INT,
+   constraint fb_employe FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);
+
+select * from employees;
+
+insert into employees value(1,'baskar',204);
+
+insert into employees value(2,'mani',204);
+insert into employees value(3,'ram',205);
+
+
+insert into employees value(2,'rani',203);
+insert into employees value(3,'kumar',201);
+insert into employees value(4,'arun',205);
+
+
+drop table departments;
+
+
+alter table employees drop foreign key fb_employe;
